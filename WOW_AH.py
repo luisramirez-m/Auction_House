@@ -11,11 +11,14 @@ def create_access_token(client_id, client_secret, region = 'eu'):
     return response.json()
 
 def get_hellfire(token):
-    search = "https://eu.api.blizzard.com/data/wow/connected-realm/1587/auctions?namespace=dynamic-eu&locale=en_GB&access_token=" + token
+    search = "https://eu.api.blizzard.com/data/wow/connected-realm/1379/auctions?namespace=dynamic-eu&locale=en_GB&access_token=" + token
     response = requests.get(search)
     return response.json()["auctions"]
 
-response = create_access_token('YOUR_ID', 'YOUR_SECRET')
+client_id = 'YOUR_CLIENT'
+secret =  'YOUR_SECRET'
+
+response = create_access_token(client_id, secret)
 token = response['access_token']
 
 hellfire_auctions = get_hellfire(token)
@@ -32,6 +35,7 @@ auction_df['collection_month'] = datetime.now().strftime('%m')
 auction_df['collection_day'] = datetime.now().strftime('%d')
 auction_df['collection_hour'] = datetime.now().strftime('%H')
 
-filename = datetime.now().strftime('Hellfire_EU-%Y-%m-%d-%H-%M.csv')
 print( 'Exporting Data ...' )
+filename = datetime.now().strftime('Sanguino_EU-%Y-%m-%d-%H-%M.csv')
+filename = 'data/{}'.format(filename)
 auction_df.to_csv(filename, index=False)
